@@ -15,19 +15,33 @@ class ONNX_MODEL:
         self.ort_session = onnxruntime.InferenceSession(model_path)
 
     def classify(self,input_audio_file):
-        ort_inputs = {self.ort_session.get_inputs()[0].name: 
-              
-                  self.feature_extractor(
-                    librosa.load(input_audio_file,sr=None)[0], 
-                    sampling_rate=self.feature_extractor.sampling_rate, 
-                    max_length=int(self.feature_extractor.sampling_rate * self.max_duration), 
-                    truncation=True, 
-                    padding="max_length"
-                    )["input_values"][0][None,:]
+        if type(input_audio_file)==str: 
+            ort_inputs = {self.ort_session.get_inputs()[0].name: 
+                
+                    self.feature_extractor(
+                        librosa.load(input_audio_file,sr=None)[0], 
+                        sampling_rate=self.feature_extractor.sampling_rate, 
+                        max_length=int(self.feature_extractor.sampling_rate * self.max_duration), 
+                        truncation=True, 
+                        padding="max_length"
+                        )["input_values"][0][None,:]
 
-              }
+                }
+        else: 
+            ort_inputs = {self.ort_session.get_inputs()[0].name: 
+                
+                    self.feature_extractor(
+                        input_audio_file, 
+                        sampling_rate=self.feature_extractor.sampling_rate, 
+                        max_length=int(self.feature_extractor.sampling_rate * self.max_duration), 
+                        truncation=True, 
+                        padding="max_length"
+                        )["input_values"][0][None,:]
+
+                }
+
         return np.argmax(self.ort_session.run(None, ort_inputs)[0],axis=1)[0]
-
+2
 if __name__ == "__main__":
     model = ONNX_MODEL("onnx_transformer.onnx")
     print(model.classify("a.wav"))
