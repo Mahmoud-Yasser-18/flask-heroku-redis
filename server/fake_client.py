@@ -17,6 +17,6 @@ audio = librosa.load(input_audio_file,sr=16000)[0].tolist()
 
 # print (len(silence(audio)))
 
-r=  requests.post(url = "https://speakar.herokuapp.com/8080",json={"samples":audio})
+r=  requests.post(url = "https://speakar.herokuapp.com",json={"samples":audio})
 print(r.text)
 print(r.json())
