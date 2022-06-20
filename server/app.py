@@ -1,4 +1,3 @@
-from numpy import int32
 from onnx_model import ONNX_MODEL
 from flask import Flask, request, jsonify
 app = Flask(__name__)
