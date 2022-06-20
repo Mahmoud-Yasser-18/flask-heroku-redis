@@ -4,9 +4,10 @@ app = Flask(__name__)
 
 model =  ONNX_MODEL("onnx_transformer.onnx")
 
-# @app.route('/')
-# def hello():    
-#     return f'<h2> Hello Flask {model.classify("a.wav")} </h2>'
+@app.route('/',methods=["GET"])
+def hello():    
+    return f'<h2> Hello Flask {model.classify("a.wav")} </h2>'
+
 
 
 
