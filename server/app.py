@@ -15,7 +15,6 @@ model =  ONNX_MODEL("onnx_transformer.onnx")
 def hello_world():
     data = request.get_json(force=True)['samples']
     resp = {"status":200,"prediction":0,"prediction_prob":int(model.classify(data))}
-    print(resp)
     return jsonify(resp)
 
 

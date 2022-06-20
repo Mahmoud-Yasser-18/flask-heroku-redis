@@ -15,4 +15,4 @@ ENV PORT 8080
 COPY server/ /app
 WORKDIR /app
 COPY . .
-CMD exec gunicorn --bind :$PORT --workers 1 app:app
+CMD exec gunicorn --bind :$PORT --workers 2 app:app
