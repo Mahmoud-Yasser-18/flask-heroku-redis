@@ -15,7 +15,8 @@ def hello():
 @app.route("/", methods=["POST"])
 def hello_world():
     data = request.get_json(force=True)['samples']
-    resp = {"status":200,"prediction":0,"prediction_prob":int(model.classify(data))}
+    class_id, probability =model.classify(data)
+    resp = {"status":200,"prediction":int(class_id),"prediction_prob":float(probability)}
     return jsonify(resp)
 
 

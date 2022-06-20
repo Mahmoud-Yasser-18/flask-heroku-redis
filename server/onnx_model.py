@@ -8,6 +8,12 @@ from transformers import  Wav2Vec2FeatureExtractor
 
 # compute ONNX Runtime output prediction
 
+def softmax(x):
+    
+    f_x = np.exp(x) / np.sum(np.exp(x))
+    return f_x
+
+
 class ONNX_MODEL: 
     def __init__(self,model_path) -> None:
         self.max_duration = 1
@@ -39,9 +45,9 @@ class ONNX_MODEL:
                         )["input_values"][0][None,:]
 
                 }
+        outputs = softmax(self.ort_session.run(None, ort_inputs)[0])
+        return np.argmax(outputs,axis=1),np.max(outputs,axis=1)
 
-        return np.argmax(self.ort_session.run(None, ort_inputs)[0],axis=1)[0]
-2
 if __name__ == "__main__":
     model = ONNX_MODEL("onnx_transformer.onnx")
     print(model.classify("a.wav"))
